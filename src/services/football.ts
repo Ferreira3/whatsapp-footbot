@@ -17,16 +17,15 @@ export async function getMatches(dateFrom?: string, dateTo?: string) {
 }
 
 export function formatMatches(matches: any[]): string {
-    if (!matches || matches.length === 0) return 'Nenhum jogo foi encontrado.';
+    if (!matches || matches.length === 0) return 'Nenhum jogo encontrado.';
 
-    return matches
-        .map((j) => {
-            const homeTeam = j.homeTeam.name;
-            const awayTeam = j.awayTeam.name;
-            const homeScore = j.score.fullTime.home ?? '-';
-            const awayScore = j.score.fullTime.away ?? '-';
+    return matches.map((j) => {
+        const liga = j.competition.name;
+        const casa = j.homeTeam.name;
+        const fora = j.awayTeam.name;
+        const placar = `${j.score.fullTime.home ?? '-'} x ${j.score.fullTime.away ?? '-'}`;
+        const status = j.status === 'IN_PLAY' ? '🔴 AO VIVO' : j.status === 'FINISHED' ? 'FT' : 'Agendado';
 
-            return `⚽ *${homeTeam}* ${homeScore} x ${awayScore} *${awayTeam}*`;
-        })
-        .join('\n');
+        return `🏆 *${liga}*\n⚽ ${casa} ${placar} ${fora}\n⏱️ Status: _${status}_\n`;
+    }).join('\n');
 }
